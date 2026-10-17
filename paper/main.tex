@@ -1,0 +1,171 @@
+\documentclass[11pt]{amsart}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amssymb,amsmath,amsthm}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+
+\title[The Erd\H{o}s--Herzog--Piranian lemniscate problem in degree three]{The Erd\H{o}s--Herzog--Piranian lemniscate problem in degree three: a computer-assisted proof}
+
+\author{Uchral Nyam-Osor}
+\address{Independent}
+
+\date{October 2026}
+
+\begin{document}
+\sloppy
+
+\begin{abstract}
+For a monic polynomial $p$ let $E(p)=\{z\in\C:|p(z)|=1\}$. Erd\H{o}s, Herzog and Piranian conjectured that, among monic polynomials of degree $n$, the length of $E(p)$ is maximised by $p(z)=z^n-1$. The case $n=2$ is due to Eremenko and Hayman, and Tao has recently proved the conjecture for all sufficiently large $n$. The erdosproblems.com entry for the problem reports that the case $n=3$ was settled computationally by Chatelet; we are not aware of a written account of that work. We give an independent, written computer-assisted proof of the case $n=3$: every monic cubic satisfies $\ell(E(p))\le \ell(E(z^3-1))=2^{1/3}B(\tfrac16,\tfrac12)=9.1797\ldots$. Using a theorem of Eremenko and Hayman we reduce the problem to a one-parameter family of cubics whose critical values lie on the unit circle. Near $z^3-1$ the length has a square-root cusp; we handle it with an exact identity that is regular at the cusp. The remaining inequality is verified with rigorous ball arithmetic. The proof has not yet been independently refereed, and the verification code is public.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+For a polynomial $p$ write $E(p)=\{z\in\C:|p(z)|=1\}$ for its lemniscate and $\ell(E(p))$ for its length. In 1958 Erd\H{o}s, Herzog and Piranian \cite{EHP} asked for the largest possible length of $E(p)$ over monic polynomials of degree $n$, and conjectured that the maximum is attained by $z^n-1$. This is Problem \#114 in Bloom's list of Erd\H{o}s problems \cite{EP}.
+
+The case $n=1$ is trivial. Eremenko and Hayman \cite{EH} proved the case $n=2$, and showed that a maximiser exists and can be chosen with all of its critical points on $E(p)$. Upper bounds of linear order in $n$ were obtained by Borwein \cite{Bor} and Eremenko--Hayman \cite{EH}, and Fryntov and Nazarov \cite{FN} proved the asymptotically sharp bound $2n+o(n)$ and showed that $z^n-1$ is a local maximiser. Tao \cite{Tao} recently proved the conjecture for all sufficiently large $n$, without an explicit threshold. The case $n=3$ is reported to be recorded on erdosproblems.com as settled by a computation of Chatelet \cite{EP}; see Remark~\ref{rem:prior}. The purpose of this note is to give a complete written proof of that case whose analytic steps can be checked by reading, with the computer verification confined to two explicit inequalities (Parts 1 and 2 of Section~\ref{sec:verification}).
+
+\begin{theorem}\label{thm:main}
+For every monic polynomial $p$ of degree $3$,
+\[
+\ell(E(p))\le \ell(E(z^3-1)) = 2^{1/3}B\!\left(\tfrac16,\tfrac12\right)=9.17972422234315\ldots
+\]
+Moreover, among monic cubics whose critical values lie on the unit circle $\T$, equality holds only for $z^3-1$ up to rotation and translation.
+\end{theorem}
+
+The proof has two parts. Section~\ref{sec:reduction} reduces Theorem~\ref{thm:main} to an inequality $L(\theta)<L_0$ for a one-parameter family $p_\theta$. Section~\ref{sec:formula} gives integral formulas for $L(\theta)$, including one (Proposition~\ref{prop:G}) that is regular at the cusp $\theta=0$. Section~\ref{sec:verification} describes a rigorous ball-arithmetic verification of the inequality.
+
+\begin{remark}\label{rem:prior}
+We were informed (A.~Eremenko, private communication) that the erdosproblems.com page for this problem \cite{EP} records that the case $n=3$ was solved by Chatelet, with a reference to code rather than to a written text. We learned of this only after our argument was complete, and we have not been able to examine that code; the argument below was found independently, and we make no claim of priority for the case $n=3$. A separate public computational census for $3\le n\le 14$ also exists; its author describes it as a census rather than a proof.
+\end{remark}
+
+\section{Reduction to a one-parameter family}\label{sec:reduction}
+
+We use two results of Eremenko and Hayman \cite[Lemmas 4 and 5]{EH} (see also \cite[Proposition 1.2]{Tao}):
+\begin{enumerate}
+\item for each $n$, the length $\ell(E(p))$ attains its maximum over monic polynomials of degree $n$;
+\item some maximiser has all of its critical points on $E(p)$, i.e.\ all its critical values lie on $\T$.
+\end{enumerate}
+
+The length is invariant under translations $z\mapsto z+c$ and under $p(z)\mapsto \omega^{-n}p(\omega z)$ with $|\omega|=1$. So for $n=3$ we may assume $p(z)=z^3+az+b$, with critical values on $\T$.
+
+If $p$ has a double critical point then $a=0$, so $p=z^3+b$ with $|b|=1$, which is a rotation of $z^3-1$.
+
+Otherwise the critical points are $\pm c$ with $c^2=-a/3$, and $p(\pm c)=b\pm\tfrac{2a}{3}c$. After a rotation the two critical values are $e^{\pm i\theta/2}$ with $0<\theta\le\pi$. Solving,
+\[
+p_\theta(z)=z^3+az+b,\qquad b=\cos\tfrac\theta2,\qquad a^{3/2}=\alpha:=\tfrac{3\sqrt3}{2}\sin\tfrac\theta2\in\bigl(0,\tfrac{3\sqrt3}{2}\bigr],
+\]
+where the three choices of the cube root give the same polynomial up to $z\mapsto e^{2\pi i/3}z$; we take $a>0$. Put $L(\theta)=\ell(E(p_\theta))$ and $L_0=\ell(E(z^3-1))$. Theorem~\ref{thm:main} follows from
+\begin{equation}\label{eq:star}
+L(\theta)<L_0\qquad (0<\theta\le\pi).
+\end{equation}
+
+\section{Integral formulas}\label{sec:formula}
+
+Away from critical points, $p$ maps $E(p)$ onto $\T$ $n$-to-$1$, stretching arc length by $|p'|$. Hence
+\[
+\ell(E(p))=\int_{-\pi}^{\pi}\sum_{p(z)=e^{it}}\frac{dt}{|p'(z)|}.
+\]
+For $z^3+1$ this gives $L_0=\int_{-\pi}^{\pi}|e^{it}-1|^{-2/3}\,dt=2^{1/3}B(\tfrac16,\tfrac12)$.
+
+Let $q(\zeta)=\zeta^3+\zeta$, with critical points $\pm i/\sqrt3$ and critical values $\pm i\sigma$, $\sigma=2/(3\sqrt3)$, and set
+\[
+h(\eta)=\sum_{q(\zeta)=\eta}\frac{1}{|q'(\zeta)|}\qquad(\eta\ne\pm i\sigma),
+\]
+the sum running over the three roots. Substituting $z=\sqrt a\,\zeta$ gives $p_\theta(z)=\alpha q(\zeta)+b$ and $p_\theta'(z)=a\,q'(\zeta)$. Writing $e^{it}=b+\alpha\eta$ we obtain
+\begin{equation}\label{eq:L}
+L(\theta)=\frac1a\int_{-\pi}^{\pi}h\!\left(\frac{e^{it}-b}{\alpha}\right)dt=\frac2a\int_0^{\pi}h\!\left(\frac{e^{it}-b}{\alpha}\right)dt,
+\end{equation}
+using $h(\bar\eta)=h(\eta)$. The circle $\{(e^{it}-b)/\alpha\}$ passes through $\pm i\sigma$ at $t=\pm t_c$, where $\sin t_c=\alpha\sigma$, $\cos t_c=b$, and $t_c=\theta/2$.
+
+\subsection*{The cusp at $\theta=0$}
+As $\theta\to0$ numerical evaluation of \eqref{eq:L} shows $L(\theta)=L_0-2D\sqrt a+o(\sqrt a)$ with $2D=0.938307\ldots$; since $\sqrt a\sim c\,\theta^{1/3}$, $L$ has infinite slope at $\theta=0$. A direct interval evaluation of $L$ therefore cannot certify a neighbourhood of $\theta=0$. We avoid this with the following identity.
+
+\begin{proposition}\label{prop:G}
+Let $\eta_0(\tau)=i\tau/(1-i\alpha\tau/2)$, $w(\tau)=(1+\alpha^2\tau^2/4)^{-1}$ and $\varepsilon=(1-b)/\alpha=\frac{4\alpha/27}{1+b}$. Then
+\[
+G(\alpha):=\frac{L_0-L(\theta)}{\sqrt a}=2\int_0^\infty\Bigl[|\eta_0(\tau)|^{-2/3}-h(\eta_0(\tau)+\varepsilon)\Bigr]w(\tau)\,d\tau .
+\]
+\end{proposition}
+
+\begin{proof}
+Substitute $t=2\arctan(\alpha\tau/2)$, $\tau\in\R$, so that $dt=\alpha\,w(\tau)\,d\tau$ and $e^{it}-1=\alpha\,\eta_0(\tau)$. Then $L_0=\int_\R \alpha^{-2/3}|\eta_0|^{-2/3}\alpha w\,d\tau=\sqrt a\int_\R|\eta_0|^{-2/3}w\,d\tau$, since $\alpha^{1/3}=\sqrt a$. Similarly $(e^{it}-b)/\alpha=\eta_0(\tau)+\varepsilon$, so \eqref{eq:L} becomes $L(\theta)=\sqrt a\int_\R h(\eta_0+\varepsilon)w\,d\tau$. Both integrands are even in $\tau$. Finally $1-b=1-\sqrt{1-4\alpha^2/27}$ gives the second expression for $\varepsilon$.
+\end{proof}
+
+The integrand of $G$ is integrable and $G$ extends continuously to $\alpha=0$. The inequality \eqref{eq:star} is equivalent to $G(\alpha)>0$ for $0<\alpha\le 3\sqrt3/2$.
+
+\begin{remark}
+Numerically $G(0)=2D$ with $D=\int_{-\infty}^{\infty}\bigl(\tfrac{2}{\sqrt3}-\sqrt{1+\tfrac{x^2}{3(1+x^2)}}\bigr)dx$, which is the length deficit of the hyperbola $3y^2-x^2=1$ relative to its asymptotes: near the origin $E(p_\theta)$ is close to $\sqrt a\cdot\{\operatorname{Re}q=0\}$, the union of the imaginary axis and this hyperbola. This remark is not used in the proof.
+\end{remark}
+
+\section{Rigorous verification}\label{sec:verification}
+
+All computations use midpoint--radius (ball) arithmetic in Arb \cite{Arb}, through \texttt{python-flint} 0.9, at 80 bits of precision. Only upper bounds on $h$ are needed, together with a lower bound on the explicit term $\int|\eta_0|^{-2/3}w$ in Part~1.
+
+\begin{lemma}[root enclosures]\label{lem:roots}
+Let $H$ be a complex ball. If, for each of three floating-point approximations $\zeta_k$ to the roots of $q(\zeta)=\eta_{\mathrm{mid}}$, the Krawczyk test \cite{Kra} proves that a box $B_k\ni\zeta_k$ contains exactly one root of $q(\zeta)=\eta$ for every $\eta\in H$, and the $B_k$ are pairwise disjoint, then for all $\eta\in H$
+\[
+h(\eta)\le\sum_{k=1}^3\frac{1}{\min_{\zeta\in B_k}|3\zeta^2+1|}.
+\]
+\end{lemma}
+
+\begin{lemma}[near a critical value]\label{lem:crit}
+Let $c=i/\sqrt3$ and $0<d\le d_{\max}$, and choose $\rho,\rho_2>0$ with $\rho^2(\sqrt3-\rho)>d_{\max}$, $(\sqrt3-\rho_2)^2\rho_2>d_{\max}$ and $\rho+\rho_2<\sqrt3$. Then for $|\eta-i\sigma|=d$,
+\[
+h(\eta)\le\frac{2K_1}{\sqrt d}+K_3,\qquad K_1=\frac{\sqrt{\sqrt3+\rho}}{3(2/\sqrt3-\rho)},\qquad K_3=\frac{1}{3(\sqrt3-\rho_2)(1/\sqrt3-\rho_2)}.
+\]
+\end{lemma}
+
+\begin{proof}
+We have $q(\zeta)-i\sigma=(\zeta-c)^2(\zeta+2c)$ and $|3c|=\sqrt3$. By Rouch\'e's theorem the conditions on $\rho,\rho_2$ place two roots of $q=\eta$ in $|\zeta-c|<\rho$ and one in $|\zeta+2c|<\rho_2$. For a root near $c$, $|\zeta-c|=\sqrt{d/|\zeta+2c|}\ge\sqrt{d/(\sqrt3+\rho)}$ and $|\zeta+c|\ge 2/\sqrt3-\rho$; since $|q'(\zeta)|=3|\zeta-c||\zeta+c|$ this gives the first term. For the third root, $|\zeta-c|\ge\sqrt3-\rho_2$ and $|\zeta+c|\ge1/\sqrt3-\rho_2$.
+\end{proof}
+
+By symmetry the same bound holds near $-i\sigma$. Lemma~\ref{lem:crit} is integrable across the critical parameter and is used on short windows on either side of it.
+
+\begin{lemma}[tail]\label{lem:tail}
+For $|\eta|\ge R$, $\bigl|h(\eta)-|\eta|^{-2/3}\bigr|\le C(R)|\eta|^{-2}$, with an explicit $C(R)$; in particular $C(16)\le0.444$.
+\end{lemma}
+
+\begin{proof}[Sketch]
+Let $u$ run over the cube roots of $\eta$. By Rouch\'e's theorem on disks of radius $1/(60|u|^5)$, each root of $q=\eta$ lies within that radius of $u-\tfrac1{3u}$. Expanding $1/|q'|$ around these points, the first-order terms cancel because $\sum_k\operatorname{Re}(u_k^{-2})=0$, and the remainder is bounded explicitly. The constant $C(R)$ is evaluated in ball arithmetic (function \texttt{tail\_constant} in the code).
+\end{proof}
+
+\subsection*{Part 1: $0\le\alpha\le0.02$}
+We cover $[0,0.02]$ by 40 equal boxes. On each box we bound $G$ from below using Proposition~\ref{prop:G}: an exact lower bound for $\int_0^{T}|\eta_0|^{-2/3}w\,d\tau$ with $T=\tau_c+16$ ($\tau_c$ the parameter of the critical value); adaptive upper bounds for $\int_0^T h(\eta_0+\varepsilon)w\,d\tau$ from Lemmas~\ref{lem:roots} and~\ref{lem:crit}; and Lemma~\ref{lem:tail} for $\tau\ge T$. Every box gives $G(\alpha)\ge0.7234>0$.
+
+\subsection*{Part 2: $0.02\le\alpha\le3\sqrt3/2$}
+Here we parametrise by the critical angle $t_c\in[\arcsin(0.02\sigma),\pi/2]$, cut into 536 boxes with ratio $1.01$. On each box we bound \eqref{eq:L} from above with Lemmas~\ref{lem:roots} and~\ref{lem:crit}, writing $\eta-i\sigma=e^{it_c}(e^{i(t-t_c)}-1)/\alpha$ to keep the critical point fixed. No box needed subdivision, and every box gives $L(\theta)\le9.1411<L_0$.
+
+Parts 1 and 2 together prove \eqref{eq:star}, and hence Theorem~\ref{thm:main}. \qed
+
+\subsection*{Reproducibility}
+The code and full logs are at \url{https://github.com/gameruchral71-ctrl/erdos-114}. With \texttt{python-flint==0.9.0}, \texttt{numpy} and \texttt{mpmath} installed, \texttt{python3 part1\_small\_alpha.py 0.02 40} and \texttt{python3 part2\_large\_alpha.py 0.02 1.01} reproduce the computation (about 80 minutes on one core). The file \texttt{sanity\_checks.py} tests Lemmas~\ref{lem:roots}--\ref{lem:tail} against independent floating-point evaluation.
+
+\section{Scope}
+Theorem~\ref{thm:main} settles only $n=3$; the general problem remains open for $4\le n<N_0$, where $N_0$ is the unspecified threshold in \cite{Tao}. The argument relies on Eremenko--Hayman's Lemmas 4--5, whose proof uses quasiconformal deformation. It does not show that $z^3-1$ is the only maximiser among all monic cubics, because Lemma 5 provides only one maximiser of the special form. For $n\ge4$ the same reduction leads to an $(n-2)$-parameter family with several combinatorial types.
+
+\section*{Use of AI and contributions}
+The mathematical argument, the verification code and the text of this paper were produced by Claude, an AI model made by Anthropic, in October 2026. The author initiated and directed the project and is responsible for this submission. In line with arXiv policy, the AI model is not listed as an author. The proof has not yet been checked by an independent specialist; we welcome corrections.
+
+\begin{thebibliography}{99}
+\bibitem{Arb} F.~Johansson, \emph{Arb: efficient arbitrary-precision midpoint-radius interval arithmetic}, IEEE Trans.\ Comput.\ \textbf{66} (2017), 1281--1292.
+\bibitem{EP} T.~F.~Bloom, \emph{Erd\H{o}s problem \#114}, \url{https://www.erdosproblems.com/114}.
+\bibitem{Bor} P.~Borwein, \emph{The arc length of the lemniscate $\{|p(z)|=1\}$}, Proc.\ Amer.\ Math.\ Soc.\ \textbf{123} (1995), 797--799.
+\bibitem{EH} A.~Eremenko and W.~Hayman, \emph{On the length of lemniscates}, Michigan Math.\ J.\ \textbf{46} (1999), 409--415. arXiv:0805.2295.
+\bibitem{EHP} P.~Erd\H{o}s, F.~Herzog and G.~Piranian, \emph{Metric properties of polynomials}, J.\ Analyse Math.\ \textbf{6} (1958), 125--148.
+\bibitem{FN} A.~Fryntov and F.~Nazarov, \emph{New estimates for the length of the Erd\H{o}s--Herzog--Piranian lemniscate}, arXiv:0808.0717 (2008).
+\bibitem{Kra} R.~Krawczyk, \emph{Newton-Algorithmen zur Bestimmung von Nullstellen mit Fehlerschranken}, Computing \textbf{4} (1969), 187--201.
+\bibitem{Tao} T.~Tao, \emph{The maximal length of the Erd\H{o}s--Herzog--Piranian lemniscate in high degree}, arXiv:2512.12455 (2025).
+\end{thebibliography}
+
+\end{document}

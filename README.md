@@ -6,13 +6,13 @@ $$
 $$
 So the Erdős–Herzog–Piranian conjecture ([Erdős Problem #114](https://www.erdosproblems.com/114), \$250 prize for all degrees) holds for $n=3$.
 
-**Status.** This is a computer-assisted proof. It has **not been peer-reviewed**. It settles one degree only, so the problem (and its prize) stays open.
+**Status.** This is a computer-assisted proof. It has **not been peer-reviewed**. The case $n=3$ was reportedly settled earlier by Chatelet (see below); this is an independent written proof. It settles one degree only, so the problem (and its prize) stays open.
 
-**Previously known.** $n=1$ is trivial. $n=2$ is due to Eremenko–Hayman (1999). Tao ([arXiv:2512.12455](https://arxiv.org/abs/2512.12455), Dec 2025) proved the conjecture for all *sufficiently large* $n$, with no explicit threshold. To my knowledge, $n=3$ was open as of 17 Oct 2026:
-- the erdosproblems.com database and the Lean statement (google-deepmind/formal-conjectures, updated 2026-10-09) list only $n=1$, $n=2$ and large $n$;
-- the [MendozaLab census for $3\le n\le 14$](https://github.com/MendozaLab/erdos-experiments) was publicly challenged ([issue #4](https://github.com/MendozaLab/erdos-experiments/issues/4)) and its author now describes it as "a computational census, not a proof".
+**Previously known.** $n=1$ is trivial. $n=2$ is due to Eremenko–Hayman (1999). Tao ([arXiv:2512.12455](https://arxiv.org/abs/2512.12455), Dec 2025) proved the conjecture for all *sufficiently large* $n$, with no explicit threshold.
 
-The erdosproblems.com forum thread could not be read from the environment used here. It should be checked before this result is announced.
+**Earlier work on $n=3$ (correction, 17 Oct 2026).** A. Eremenko told us that the erdosproblems.com page for #114 records the case $n=3$ as already solved by Chatelet, with a reference to code but no written text. We had missed this: that site was not reachable from the environment used here, and the copies we could read (the teorth/erdosproblems database, the Lean statement in google-deepmind/formal-conjectures, cached copies of the page) did not mention it. We have not yet seen Chatelet's code. **So this is not the first solution of $n=3$.** It is an independent proof, written up as a readable paper ([`paper/main.pdf`](paper/main.pdf)) with the computation confined to two explicit inequalities.
+
+Also relevant: the [MendozaLab census for $3\le n\le 14$](https://github.com/MendozaLab/erdos-experiments) was publicly challenged ([issue #4](https://github.com/MendozaLab/erdos-experiments/issues/4)) and its author describes it as "a computational census, not a proof".
 
 **Credits.** Project initiated, directed and published by Uchral Nyam-Osor. The mathematics and code were done by Claude (Anthropic's AI model), in Oct 2026.
 
@@ -142,3 +142,4 @@ is bounded above by (a) and (b). The variable is written relative to $t_c$, as $
 | `sanity_checks.py` | independent float checks of the lemmas |
 | `explore3b.py`, `proto_G.py` | non-rigorous exploration ($L(\theta)$ table, $G(\alpha)$) |
 | `logs/` | full output of the verification runs |
+| `paper/main.pdf`, `paper/main.tex` | written proof (4 pages) |
