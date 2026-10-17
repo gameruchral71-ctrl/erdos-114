@@ -6,11 +6,15 @@ $$
 $$
 So the Erdős–Herzog–Piranian conjecture ([Erdős Problem #114](https://www.erdosproblems.com/114), \$250 prize for all degrees) holds for $n=3$.
 
-**Status.** This is a computer-assisted proof. It has **not been peer-reviewed**. The case $n=3$ was reportedly settled earlier by Chatelet (see below); this is an independent written proof. It settles one degree only, so the problem (and its prize) stays open.
+**Status.** This is a computer-assisted proof. It has **not been peer-reviewed**. Earlier proofs of $n=3$ have been claimed by Dahlke and by Chatelet (see below); this is an independent one. It settles one degree only, so the problem (and its prize) stays open.
 
 **Previously known.** $n=1$ is trivial. $n=2$ is due to Eremenko–Hayman (1999). Tao ([arXiv:2512.12455](https://arxiv.org/abs/2512.12455), Dec 2025) proved the conjecture for all *sufficiently large* $n$, with no explicit threshold.
 
-**Earlier work on $n=3$ (correction, 17 Oct 2026).** A. Eremenko told us that the erdosproblems.com page for #114 records the case $n=3$ as already solved by Chatelet, with a reference to code but no written text. We had missed this: that site was not reachable from the environment used here, and the copies we could read (the teorth/erdosproblems database, the Lean statement in google-deepmind/formal-conjectures, cached copies of the page) did not mention it. We have not yet seen Chatelet's code. **So this is not the first solution of $n=3$.** It is an independent proof, written up as a readable paper ([`paper/main.pdf`](paper/main.pdf)) with the computation confined to two explicit inequalities.
+**Earlier work on $n=3$ (correction, 17 Oct 2026).** This is **not the first proof claimed for $n=3$**. The [claims register for #114](https://erdosproblems.ai/wiki/problems/polynomials/E0114/claims) lists two earlier claims, both marked "pending review":
+- B. E. Dahlke, *The cubic Erdős–Herzog–Piranian lemniscate inequality* (Zenodo, May 2026): a written proof, using the same Eremenko–Hayman reduction, then a Chebyshev/Joukowski substitution and a three-branch estimate.
+- B. Chatelet, *Erdős–Herzog–Piranian conjecture — proof for d=3* (Aug 2026): a write-up plus a Lean development ([plasma-ai/erdos](https://github.com/plasma-ai/erdos)) that takes the reduction as a hypothesis.
+
+We had missed both, because erdosproblems.com is not reachable from the environment used here. A. Eremenko pointed them out. Ours is an independent third proof by a different route: an exact identity at the cusp at $z^3-1$, plus ball arithmetic. It is written up in [`paper/main.pdf`](paper/main.pdf). After reading that write-up, Eremenko said the desingularization of the integral seems correct; that is not a full review.
 
 Also relevant: the [MendozaLab census for $3\le n\le 14$](https://github.com/MendozaLab/erdos-experiments) was publicly challenged ([issue #4](https://github.com/MendozaLab/erdos-experiments/issues/4)) and its author describes it as "a computational census, not a proof".
 
